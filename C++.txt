@@ -1,0 +1,753 @@
+C++数据结构
+
+
+
+
+3.传送对象作为函数值时，在函数中创建的副本会调用该对象的复制构造函数，若未显式定义，则会自动创建，若一个类在构造函数中用new为指针成员分配了内存空间，并在析构函数中用delete进行释放，那么必须手工定义它的复制构造函数，因为副本析构后，母本占用的动态空间也会被释放
+
+4.类型参数化语句	template<class T>
+class point{
+T get_x();
+...}
+这是类模板，实际使用时：point<int>a
+
+
+9.判断出栈顺序是否合法
+#include<iostream>
+#include <stdexcept>
+using namespace std;
+bool Judge(char b[] )
+{
+    int low = 0;
+    for (int i=0;i<7;i++){
+        low = b[i];
+        for(int j=i;j<7;j++){
+            if(b[i]>b[j]){
+                if(b[j]>low){
+                    return false;
+                }
+                else{
+                    low=b[j];
+                }
+            }
+        }
+    }
+    return true;
+}
+
+int main()
+{
+    char b[7];
+    for (int i=0;i<7;i++){
+        cin>>b[i];
+    }
+    if(Judge(b)){
+        cout<<"True";
+    }
+    else{
+        cout<<"False";
+    }
+    return 0;
+}
+
+
+自创语言
+#include<iostream>
+using namespace std;
+int main(){
+    char map[26];
+    for(int i=0; i<26; i++){
+    map[i] = 'a' + i;
+    }
+    int n;
+    cin>>n;
+    char p[n];
+    for(int i=0; i<n; i++){
+    p[i] = 'a';
+    }
+    while(p[0] < map[n]){
+        for(int i = 0; i < n; i++){
+        cout<<p[i];
+        }
+        p[n-1]++;
+        
+        for(int j = n-1; j>0; j--){
+            if(p[j] > map[n-1]){
+                p[j]='a';
+                p[j-1]++;
+            }
+        }
+        cout<<endl; 
+    }
+    return 0;
+}
+
+10.char b[3]={'a','b','c'};
+	int m;
+	m=b[0];
+->m=97
+
+
+11.字符数组直接输入：
+char a[7];
+cin>>a;
+输入的字符之间不用空格
+
+12.vector<int> f()
+{
+...
+return {i,j,...};
+	//返回值写成这种
+}
+
+
+
+
+
+
+
+C++主干知识
+
+
+1.生成随机数：
+#include<cstdlib>
+#include<ctime>
+int main(){
+srand(static_cast<unsigned int>(time(0)));//确定种子，time(0)是当前时间
+int randomNumber=rand();
+//rand()生成从0-32767之间的随机数
+//
+}
+2.string类型（一种实参类型）
+string word("over")//word值为"over"
+string word(3,'!')//wotf值为"!!!"
+
+string l="game"
+l.size()
+string.length()
+l[0]=g
+可循环访问l
+l.find("over")//不存在时返回string::npos，是一个string中定义的一个特殊常量;存在时返回下标
+l.erase(4,5)//移除从位置4开始的长度为5的子字符串
+无5：从4开始的所有字符
+无4无5：所有字符
+l.empty()//判断是否为空字符串
+max=10;string[a]=[max]//生成数组
+
+
+3.vector向量(一个STL容器类型) //动态数组
+#include<vector>
+vector<string> inventory (a,b)  //声明新向量为string类型,有a个b元素,ab可省
+inventory.push_back()  //在向量最后添加新元素
+.size()显示大小(元素数量)
+.pop_back()  //移除最后一个元素
+.clear() //移除全部元素
+.empty()  //检查是否为空
+swap(a[i],a[j]);	//交换两个元素的值
+指向vector变量的指针：
+vector<int>Q={15,46,97,47};
+vector<int> *p;
+	p=&Q;
+cout<<p->at(0);	//输出p指向数组的第一个元素
+
+vector<srting>::iterator myIterator   //为包含string对象的向量声明了一个名为myIterator的迭代器
+vector<sring>::const_iterator iter  //...................常量迭代器，只可读不可写
+inventor.begin() //返回容器第一个元素
+for(iter=inventory.begin();iter!=inventory.end();++iter)
+{cout<<*iter<<endl;
+}//遍历
+inventory.end()返回容器中最后一个元素之后的一个迭代器
+myIterator=inventory.begin(); *myIterator="...."; //修改第一个元素的值
+（*myIterator）.size()  ==myIterator->size()  //调用函数
+inventory.insert(inventory.begin(),"....")  //第一个实参为一个迭代器
+inventory.erase(inventory.begin()+2) //移除第三个元素，返回移除元素之后的那个元素的迭代器
+
+auto it=lower_bound(row.begin(), row.end(), target)//在row数组中指定区域内查找不小于目标值的第一个元素
+判断找到时：if (it != row.end() && *it == target) {
+                return true;
+
+sort(intervals.begin(), intervals.end(), [](const auto& u, const auto& v) {
+            return u[0] < v[0];
+        });	//二维数组按第一个关键字排序
+	//comp规则作为匿名函数，[]内是引用其他的外面的变量
+
+bool cmp(const int& a, const int& b)
+{return a > b;} 	//从大到小排序
+	sort(nums.begin(), nums.end(), cmp);//也可以在函数外先写好cmp规则后直接引用
+
+4.使用STL算法
+#include<algorithm>  //算法定义头文件
+iter=find(scores.begin();scores.end(),score);  //第三个实参是需要查找的值
+if(iter!=scores.end())  //检验是否查找成功
+srand(static_cast<unsigned int>(time(0)));random_shuffle(scores.begin(),scores.end())；//重新排序
+sort(scores.begin(),scores.end()) //以升序排序
+scores.capacity()  //返回容量，容量以倍增长
+scores.reserve() //将向量的容量扩充至给定实参的大小
+
+
+5.#include<cctype>
+guess=toupper(guess);  获取guess的大写形式
+
+6.int glob=10;  //写在所有函数外（包括主函数）可以作为全局变量
+const int glob=10;  //声明全局常量
+
+7.函数默认参数
+函数声明：int f(int h,int l=1)
+函数定义：int f(int h,int l)  //不必重复
+h和l位置不能反，即最后才有默认参数
+
+
+9.内联函数
+inline int f(int h){}  //定义时在前加inline,声明时不用，复制可提高效率
+
+11.返回引用
+string& f(vector<string>& vec,int i)
+{return vec[i];
+}  //返回向量位置i处的元素的引用
+string a=f(vev,1)或string& a=f(vec,1)  //都可接受函数返回值,前半句没有将引用赋值给a,因为a是个string类型的对象，此时a的值为引用所指向的元素（有额外开销）；后半句高效
+不要返回局部变量的引用
+
+
+12.指针
+int *p ==int* p ==int * p  //声明一个名为p的指针，只能指向int型值
+int score=100;p=&score;  //p包含了score的地址
+*p  //解引用,访问p指向的那个对象，其值为100
+string str="score";string *p=&str;  (*p).size()==p->size()
+int* const p=&score; //p只能指向其初始化时指向的对象，p是常量指针，定义时必须初始化，p指向的地址无法修改，而指向的值可以
+const int*p  //指向常量的指针，无法通过指针修改指向的值，而值本身可以修改
+const int* const p;  //两者结合
+
+
+15.类
+class cri
+{private:
+int a,b;
+public:
+cri(int c=0);  //构造函数,并使用默认参数
+void f()
+};
+cri::cri(int c)
+{
+a=c;
+}  //类外展开构造函数
+void cri::f(){
+} //类外展开函数
+cri::cri(int c,int d):a(c),b(d)
+{	}//参数初始化列表
+
+#include<iostream>
+using namespace std;
+class yyk{
+	public:
+		int a,x;
+		yyk(int a1=1,int x1=0);
+};
+yyk::yyk(int a1,int x1){
+	a=a1;
+	x=x1;
+}
+int main()
+{
+	yyk C;              //写成yyk C()则运行出错
+	cout<<C.x;
+	return 0;
+}
+
+
+
+
+
+16.class f{
+public:
+int GetHunger() const;  //常量成员函数，不能修改f类中定义的非静态数据成员的值，也不能调用该类的非常量成员函数
+};
+
+
+18.静态成员函数,整个类共有
+static int GetTotal();  //声明
+int f::GetTotal(){
+return z;}	//类外定义，不能访问非静态数据成员
+
+19.聚合体：对象中有其它类的对象
+
+20.类的友元函数
+创建：在类的定义中列出前面带有关键字friend的函数原型。
+class f{
+friend void peek(const Critter& a)
+};           友元函数可以访问该类的任意成员
+定义：void peek(){}
+
+21.运算符重载
+定义一个名为operatorX的函数，其中X是需要重载的运算符
+ostream& operator<<(ostream& os,const Critter& aCritter)
+{
+os<<"Critter Object - ";
+os<<"m_Name:"<<aCritter.m_Name;
+return os;}
+
+22.new运算符在堆中分配内存，然后返回其地址。
+int* p=new int;  //new int 为一个int型变量在堆中分配足够的内存，并返回堆中那块内存的地址
+int* p声明了一个局部指针p,指向内存块
+int* p=new int(10)  //初始化，将内存块赋值为10
+
+int* intOnHeap(){
+int* pd=new int(20);
+return pd;}
+int* p=intOnHeap();  //调用函数返回该内存块的指针
+delete p;  //释放存储的堆中的内存
+释放内存后，原指针称为野指针，应重新赋值p=0或赋予一个合法的内存地址
+
+23.类的析构函数
+Critter::~Critter()
+{
+cout<<"Destructor called\n.";
+delete m_pName;  //删除指向堆中的指针，防止内存泄露
+}
+
+24.拷贝构造函数
+
+浅拷贝：	若未在程序中编写自己的拷贝构造函数，当通过值传递对象时，对象的自动复制将会导致新对象指向堆中的同一个字符串，在旧对象析构函数调用释放掉内存时，新指针将成为野指针
+深拷贝：	让新生成的对象在堆中拥有自己的内存块，对象中的每个数据成员都指向一个堆中的对象
+类外定义拷贝构造函数,实现深拷贝：
+Critter::Critter(const Critter& c)
+{
+cout<<"Copy Constructor called.\n";
+m_pName=new string(*(c.m_pName))
+m_Age=c.m_Age;
+}	必须使用与类名相同的名称，不返回值，但接受一个对类的对象的引用，该对象就是需要复制的对象，引用最好声明为常量引用，保护原始对象再复制时不被修改
+
+25.赋值运算符的重载
+对简单的类而言通常不会有问题。而当类中有数据成员指向堆中的值时，若没有重载赋值运算符，对象赋值给另一对象时只会被浅拷贝。
+类中声明：Critter& Critter::operater=(const Critter& c)
+类外定义：Critter& Critter::operater=(const Critter& c)
+{
+cout<<"Overloaded Assignment Operator called\n";
+if(this !=c)
+{delete m_pName;
+m_pName=new string(*(c.m_pName));
+m_Age=c.m_Age;
+}
+return *this;
+}  //返回一个Critter对象的引用。
+crit1=crit2;  //crit1调用了赋值运算符成员函数operator=(),c是crit2的常量的引用
+//this指针是所有非静态成员函数自动具备的一个指针，指向用于调用该函数的对象  	//if(this!=&c)是检查crit1的地址是否不等于crit2的地址，即检查对象是否没有赋值给自身
+//delete m_pName释放掉了crit1的m_pName指向的堆中内存，后又分配了新的内存块再进行复制
+最后通过return *this返回新的crit1的副本
+
+26.继承：
+class boss:public enemy
+{};
+//继承时没有继承构造函数、拷贝构造函数、析构函数、重载的赋值运算符
+//执行顺序：父类构造-自身构造-自身析构-父类析构
+protected成员只能被本类与特定派生类访问，取决于继承的访问级别
+private成员只能被本类访问，不能被任何派生类直接访问
+
+27.显式调用基类构造函数：
+class enemy{
+public:
+...
+};
+enemy::enemy(int damage):
+m_damage(damage)
+{}
+class boss:public enemy
+{
+};
+boss:boss(int damage):
+enemy(damage)
+{}
+
+28.声明虚基类成员函数
+希望在派生类中重写基类成员函数，应在基类中用virtual声明其为虚函数
+class enemy{
+...
+void virtual taunt() const;
+};
+类外定义：
+void enemy::taunt() const
+{
+cout<<"...";}  //定义中不使用virtual,只在声明中使用关键字virtual
+void virtual taunt() const;在派生类中重写taunt()时，虽不必要，但还是显式地声明为虚函数
+void boss::taunt() const
+{
+cout<<"...";
+}  //类外定义
+再通过任意boss对象调用成员函数时，执行新的定义，替换掉所有boss对象中从enemy继承过来的taunt()的定义
+
+29.调用基类成员函数
+void boss::attack() const
+{
+enemy::attack();
+cout<<"...";
+}  //enemy::attack()显式地调用了enemy的attack()成员函数
+在重写一个基类的重载成员函数时，基类成员函数的所有重载版本都会被覆盖掉，意味着访问其他版本的成员函数的唯一方式是显式地调用基类成员函数，因此最好重写重载函数的每个版本
+
+30.在派生类中重载赋值运算符时，通常需要调用基类中的赋值运算符成员函数，方法是使用基类名称作为前缀显式调用
+boss& operator=(const boss b)
+{
+enemy::operator=(b);
+}
+boss(const boss&b):enemy(b)
+{...
+}//拷贝构造函数，通常需要调用基类的拷贝构造函数,将enemy的成员数据复制到新boss对象中，余下部分可以将Boss中声明的数据成员复制到新对象中
+
+31.多态
+派生类的对象同样属于基类，可以使用基类指针指向派生类的对象
+enemy *p=new boss();  //一个接受enemy指针的函数能处理enemy或Boss对象。只要派生的成员函数被声明为虚函数即可
+p->attack();调用boss对象的attack()成员函数
+
+32.基类指针指向派生类对象时，删除指针只有对象的基类析构函数被调用
+定义虚析构函数，让派生类也能释放内存
+virtual ~enemy()；  基类中声明
+若类中有虚成员函数，也应当将析构函数声明为虚函数
+
+33.抽象类
+指示creature只作为基类而不用于实例化对象，称creature为抽象类
+声明纯虚函数：对于类中的成员函数没有合适的定义
+virtual void Greet() const=0;  //声明	当类包含至少一个纯虚函数时，称该类为抽象类，可以作为其他类的基类，无法用来实例化对象
+若重写基类所有纯虚函数，则新类不是抽象类，可用来实例化对象
+void orc::greet() const
+{
+cout<<"...";
+}
+
+34.枚举类型
+enum difficulty{novice,easy,normal,hard,unbeatable}
+//默认情况下，枚举数从0开始，每次加1.若定义自己的枚举类型，只要在enum后加标识符再加花括号
+difficulty mydifficulty=easy;  //mydifficulty是difficulty类型的变量，能够储存被定义的值
+未赋值的枚举数为前一个枚举数的值加1
+
+35.memset：char型初始化函数
+
+头文件：<string.h> 或 <memory.h>
+
+函数原型：void *memset(void *s , int ch , size_t  n )
+
+memset(结构体/数组名 , 用于替换的ASCII码对应字符 , 前n个字符 );
+
+memset(结构体/数组名 , "用于替换的字符“ , 前n个字符 );
+
+memset(a,0,sizeof(a));
+
+函数解释：将s中的前n个字节用ch替换并且返回s
+
+36.哈希表
+
+#include<unordered_map>	//头文件	键值对
+#include<unordered_set>	//头文件	非键值对
+unordered_map<key,value>Hash;	//定义哈希表，如unordered_map<int,int> Hash;
+unordered_set< >Hash;		//建立非键值对哈希表。
+插入时：hash.insert(x);
+Hash[1]=3;	//建立哈希表
+Hash.insert<make_pair(1,3)>;//建立哈希表
+Hash.insert({1,3});//哈希表插入
+unordered_map<int,int>::iterator it;	//迭代器
+it->first; it->second;	//利用迭代器访问变量，first访问键，second访问值
+it=Hash.find(1);	//查找key为1的键值对是否存在 ,若没找到则返回Hash.end()，返回值为迭代器在该数据结构的位置
+可以调用it输出值：cout<<it->second;
+Hash[1] = 4;	//修改哈希表
+Hash.erase(it); //删除迭代器为it的哈希键值对
+Hash.clear(); //清除哈希表
+for (auto i = Hash.begin(); i != Hash.end(); i++)
+	{
+		cout << i->second << ' ';
+	}//遍历哈希表
+Hash[n]++;		//若n不存在则自动创建再自增
+使用Hash.count()，返回的是被查找元素是否存在。如果有，返回1；否则，返回0
+
+37. auto it = hashtable.find(target - nums[i]);
+auto的原理就是根据后面的值，来自己推测前面的类型是什么。
+
+auto的作用就是为了简化变量初始化，如果这个变量有一个很长很长的初始化类型，就可以用auto代替。
+
+
+38.获取vector<vector<int>>& nums	二维数组的行数与列数
+ int m = nums.size();	//行数
+ int n = nums[0].size();	//列数
+
+39.vector二维数组的初始化
+vector<vector<int>> yh(n,vector<类型>(m, x));	//n代表行数，必写,m是列数，x是每个元素的值
+vector<int>(m,x)	//一维数组初始化，表示有m个元素，每个元素的值都是x
+
+yh.push_bak({1, 2});	//直接向二维数组中添加一维数组
+如vector<vector<int>> yh(numRows);
+
+yh[i].resize(n);	//将第i行扩充至n个元素
+vector<vector<int>> newM(matrix); 	//复制
+
+vector<int> cur;
+yh.push_back(cur);		//可直接在二维数组中添加一维数组
+
+
+vector<int> a;
+vector<int> b;	//a,b数组可以用a==b判断是否相等
+
+
+40.二维数组的一维表示
+m*n的二维数组，
+（i，j）->i*n+j=x;
+i=x/n;
+j=x%n;
+
+41.新建链表节点
+p->next=new jd;
+
+42.栈和队列
+#include<stack>	//栈头文件
+#include<queue>	//队列头文件
+
+定义栈如下：
+stack<int> stk;
+定义队列如下：
+queue<int> q;
+
+栈提供了如下的操作
+s.empty()               如果栈为空返回true，否则返回false  
+s.size()                返回栈中元素的个数  
+s.pop()                 删除栈顶元素但不返回其值  
+s.top()                 返回栈顶的元素，但不删除该元素  
+s.push()                在栈顶压入新元素  
+
+队列提供了下面的操作
+q.empty()               如果队列为空返回true，否则返回false  
+q.size()                返回队列中元素的个数  
+q.pop()                 删除队列首元素但不返回其值  
+q.front()               返回队首元素的值，但不删除该元素  
+q.push()                在队尾压入新元素  	
+q.back()                返回队列尾元素的值，但不删除该元素  
+
+deque是另一种队列，双向的，可以对队头和队尾同时操作
+
+43.emplace操作是C++11新特性，新引入的的三个成员emlace_front、empace 和 emplace_back,这些操作构造而不是拷贝元素到容器中，这些操作分别对应push_front、insert 和push_back，允许我们将元素放在容器头部、一个指定的位置和容器尾部。
+
+emplace_back主要用于二维哈希表，向第二维添加元素
+unordered_map<char,vector<char>>map;map[b].emplace_back(k);
+
+
+stack<TreeNode*> stk;
+stk.emplace(node);
+
+44.LONG_MIN, LONG_MAX
+分别代表整型数的最小值、最大值
+
+45.位运算/异或运算
+异或运算有以下三个性质。
+
+任何数和 00 做异或运算，结果仍然是原来的数，即 a^0=a;
+任何数和其自身做异或运算，结果是 00，即 a^a=0;
+异或运算满足交换律和结合律.
+
+46.list		双向链表
+#include<list>
+初始化与vector一致
+list assign();  //给list赋值
+如list.assign(3,100)	//给list赋值3个100
+或list.assign(list2.begin(),list2.end());	//将表2赋值给表1	也可写为list=list2
+list1.merge（list2） 将两个链表合并为list1
+list1.remove(1)	从链表1中移除元素1
+list1.reverse()	将链表元素倒转
+list1.sort(); 	//排序
+list1.swap(list2)	//将表1与表2交换
+list1.unique();	//删除重复元素
+遍历：
+list<int>row;  定义List
+list<int>::iterator p1;	//定义迭代器 用于遍历 
+ //遍历值   
+	 for(p1=row.begin();p1!=row.end();p1++){
+		cout<< *p1 <<" ";
+	 }	
+
+47.浮点数的精度是指有效数字位数
+
+48.cout格式化输出
+http://c.biancheng.net/view/7578.html#:~:text=C%2B%2B%20%E9%80%9A%E5%B8%B8%E4%BD%BF%E7%94%A8%20cout%20%E8%BE%93%E5%87%BA%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%92%8C,printf%20%28%29%20%E5%87%BD%E6%95%B0%E7%9B%B8%E6%AF%94%EF%BC%8Ccout%20%E5%AE%9E%E7%8E%B0%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA%E6%95%B0%E6%8D%AE%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9B%B4%E5%8A%A0%E5%A4%9A%E6%A0%B7%E5%8C%96%E3%80%82
+
+49.new和结构体
+struct num{
+	int a,b;
+	char c;
+};
+num *p=new num[5];
+此时p[i]是一个num类型的结构，不是指针。
+运算符重载时注意
+
+50.c++输入时读取空格/回车
+string x; 
+gets(x);//读取空格，读取回车 
+cin>>x;//不读取空格， 不读取回车
+getline(cin,x);//读取空格，不读取回车 
+字符输入
+char ch;
+cin>>ch;//不读取回车
+
+51.对哈希图排序
+
+bool cmp1(pair<int, int> a, pair<int, int> b) {
+    return a.first < b.first;//对于first的升序
+}
+bool cmp2(pair<int, int>a, pair<int, int> b) {
+    return a.second < b.second;//对于second的升序
+}
+
+
+ //对于first升序排列
+    cout << "对于first升序排列:" << endl;
+    sort(vecs.begin(), vecs.end(),cmp1);
+    for (auto it = vecs.begin(); it != vecs.end(); it++)
+        cout << it->first << ':' << it->second << '\n';
+    //对于second升序排列
+    cout << "对于second升序排列:" << endl;
+    sort(vecs.begin(), vecs.end(), cmp2);
+    for (auto it = vecs.begin(); it != vecs.end(); it++)
+        cout << it->first << ':' << it->second << '\n';
+    return 0;
+
+52.new 创建二维数组
+第一种：
+int (*p)[10] = new int[5][10];
+第二种：
+int **p = new int* [5];
+for(int i=0;i <5;i++)
+p[i] = new int[10];
+
+53.基于范围的for循环
+for 语句允许简单的范围迭代：
+int my_array[5] = {1, 2, 3, 4, 5};
+for (auto x : my_array)
+{
+    x *= 2;
+    cout << x << endl;  
+}	#这里只修改x的值，不修改原数组的值
+
+当需要修改用于循环的迭代时：
+for(auto &x: my_array)	//这里传进了地址，相当于修改原数组的值
+
+当只想读取而不想修改时：for(const auto &x:my_array)	//用&传进了地址，又用const防止修改原数组的值
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+C++解题
+
+
+1.双指针
+2.// 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
+        prev->next = l1 == nullptr ? l2 : l1;
+3.递归
+4.数组int s=nums.size()/2
+
+size()偶数时,s是指中间2个的后一个下标
+
+size()奇数时,s是指中间那个数的下标
+
+5.二分查找
+int mid=(right-left)/2+left;  不超界
+
+若循环条件设left<right
+则循环结束时，left==right
+
+6.二叉搜索树
+中序遍历的数组一定递增
+
+使用LONG_MIN, LONG_MAX
+分别代表整型数的最小值、最大值
+
+可根据节点大小找到路径
+
+7.用哈希表
+
+8.二分查找
+数组有序排好
+有两种判断：[left,right]和[left,right)
+按照[left,right]来说，若数组中存在该数，最后查找的结果middle=该数
+若数组中不存在该数，则倒数第二步结果为[若该数存在，则该数在数组中理应存在的下标；若该数存在，则该数在数组中理应存在的下标]
+
+9.移除元素
+设有两个指针：快指针和慢指针
+快指针遍历原数组，判断是否加入到新数组；
+慢指针指示新数组中添加的新元素的下标
+
+退格可以从后往前比较，临界条件很重要
+
+10.长度最小的子数组
+数组全为正数，用双指针组成滑动窗口
+在sum >= s时立即计算子序列的长度，而不是先i--
+
+11.滑动窗口：
+每移动一步，去除最左边元素，加入最后面元素
+ans[left]--;	ans[right]++;
+
+12.哈希表
+set和map的.insert()方法，如果原哈希表中存在该元素，则不会重复添加（哈希表中的元素是不能重复的）
+
+unordered_set<int> t;		//set哈希表，可用于去重
+vector<int>(t.begin(), t.end());	//将set哈希表转换为一维vector数组，可获取去重后的数组
+
+
+12.string方法
+string s;
+s.resize();	//改变字符串长度，元素位置不变
+string s = "dkqwd";
+s.erase(s.begin());		//s.begin()获取开头元素的迭代器(指针，可用*获取值)，s.erase()移除对应元素
+t.erase(t.end() - 1);	//t.end()-1则是最后一个元素的迭代器
+
+string的find()函数
+string中find()返回值是子串在母串中的位置（下标记录），如果没有找到，那么会返回一个特别的标记npos。（返回值可以看成是一个int型的数）
+if(it != std::string::npos){	//需要这样访问npos
+        return true;
+    }
+
+std::stol()：此函数将在函数调用中作为参数提供的字符串转换为long int。
+std::stoll()：此函数将在函数调用中作为参数提供的字符串转换为long long int。
+如将string类型的"4353"转换为long类型的4353
+
+13.堆
+升序----使用大顶堆
+降序----使用小顶堆
+https://www.jianshu.com/p/15a29c0ace73
+
+#include<queue>
+小顶堆： priority_queue<pair<int, int>, vector<pair<int, int>>, mycomparison> pri_que;
+//这里第一个参数表明每个节点是哈希表map，第二个参数表明整个堆使用vector来存储，每个节点都是一个哈希表map元素，第三个参数表明用自定义的mycomparison类中的仿函数来比较大小
+模板申明带3个参数：priority_queue<Type, Container, Functional>，其中Type 为数据类型，Container为保存数据的容器，Functional 为元素比较方式。
+Container必须是用数组实现的容器，比如vector,deque等等，但不能用 list。STL里面默认用的是vector。
+ 比较方式默认用operator<，所以如果把后面2个参数缺省的话，优先队列就是大顶堆（降序），队头元素最大。特别注意pair的比较函数。
+对于自定义类型，则必须重载operator<或者重写仿函数。
+重载operator<的例子：返回true时，说明左边形参的优先级低于右边形参:
+bool operator<(Node a, Node b){//返回true时，说明a的优先级低于b
+     //x值较大的Node优先级低（x小的Node排在队前）
+     //x相等时，y大的优先级低（y小的Node排在队前）
+     if( a.x== b.x ) return a.y> b.y;
+     return a.x> b.x; 
+ }
+
+重写仿函数--重载（）操作符
+函数对象是指实现了 operator () 的类或者结构体。
+(需要把仿函数放在一个类中)：bool operator() ( Node a, Node b ){	//默认是less函数
+         //返回true时，a的优先级低于b的优先级（a排在b的后面）
+         if( a.x== b.x ) return a.y> b.y;      
+         return a.x> b.x; }
+
+
+14.自定义比较函数
+比较函数返回一个bool值，返回值表示两个数中谁排在前面关于 cmp 作为比较函数实现排序的原理，可以这样来进行理解：在示例中，ms1 和 ms2 是两个参数，即 msVector 容器中的元素，且此时 ms1 位于 ms2 之前，此时函数的返回值其实就是给出此时排序的正确性。若正确则返回 true，反之返回 false。
+
+15.vector计算平均值
+#include<numeric>
+double s = accumulate(res.begin(), res.end(), 0);		//accumulate有三个参数，分别为起始位置和初始值
+
+计算最值
+#include<algorithm>
+auto s = max_element(res.begin(), res.end());	max_element/min_element返回迭代器
+cout<<*s;		//得到值
+
